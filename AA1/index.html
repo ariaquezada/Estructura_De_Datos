@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Integral de Pruebas - LocalStorage</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 25px; transition: background 0.3s, color 0.3s; }
+        .dark-mode { background-color: #121212; color: #ffffff; }
+        .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 6px; }
+        button { padding: 8px 14px; cursor: pointer; margin-top: 5px; }
+    </style>
+</head>
+<body id="cuerpoPagina">
+
+    <h1>Panel de Pruebas: LocalStorage (Latencia y Persistencia)</h1>
+
+    <!-- EJEMPLO 1: Carrito de Compras -->
+    <div class="card">
+        <h3>Ejemplo 1: Carrito de Compras E-commerce</h3>
+        <button onclick="agregarZapatos()">Comprar Zapatos</button>
+        <button onclick="verCarrito()">Ver Carrito en Consola</button>
+    </div>
+
+    <!-- EJEMPLO 2: Validación de Sesión -->
+    <div class="card">
+        <h3>Ejemplo 2: Validación de Sesión (Auth)</h3>
+        <button onclick="simularLogin()">Iniciar Sesión</button>
+        <button onclick="verificarSesion()">Verificar Sesión</button>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+
+    <!-- EJEMPLO 3: Modo Oscuro -->
+    <div class="card">
+        <h3>Ejemplo 3: Preferencia de Interfaz (Modo Oscuro)</h3>
+        <button onclick="alternarTema()">Cambiar Modo Oscuro / Claro</button>
+    </div>
+
+    <!-- Scripts independientes para cada ejemplo -->
+    <script src="Example_1.js"></script>
+    <script src="Example_2.js"></script>
+    <script src="Example_3.js"></script>
+
+    <script>
+        // Aplicar el tema guardado automáticamente al cargar la página (Persistencia real)
+        window.onload = function() {
+            if (cargarTemaActual()) {
+                document.getElementById("cuerpoPagina").classList.add("dark-mode");
+            }
+        };
+
+        // Lógica Ejemplo 1
+        function agregarZapatos() {
+            let carrito = obtenerCarrito();
+            carrito.push({ id: 1, nombre: "Zapatos Deportivos", precio: 50 });
+            guardarCarrito(carrito);
+            console.log("Carrito actual:", carrito);
+            alert("¡Zapatos agregados al LocalStorage!");
+        }
+        function verCarrito() {
+            console.log("Carrito recuperado:", obtenerCarrito());
+        }
+
+        // Lógica Ejemplo 2
+        function simularLogin() {
+            const tokenFalso = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.token_seguro_123";
+            iniciarSesion(tokenFalso);
+            alert("¡Sesión iniciada! Token guardado.");
+        }
+        function verificarSesion() {
+            if (comprobarSesionActiva()) {
+                alert("¡Sesión activa confirmada localmente!");
+            } else {
+                alert("No hay sesión activa.");
+            }
+        }
+        function cerrarSesion() {
+            localStorage.removeItem("user_token");
+            alert("Sesión cerrada.");
+        }
+
+        // Lógica Ejemplo 3
+        function alternarTema() {
+            const cuerpo = document.getElementById("cuerpoPagina");
+            cuerpo.classList.toggle("dark-mode");
+            const esOscuro = cuerpo.classList.contains("dark-mode");
+            cambiarTema(esOscuro); // Guarda el estado en LocalStorage
+        }
+    </script>
+</body>
+</html>
